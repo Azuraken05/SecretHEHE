@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .hearts-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.3;
+            animation: float 10s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .question-screen {
+            display: block;
+        }
+
+        .letter-screen {
+            display: none;
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .gif-container {
+            margin: 30px 0;
+        }
+
+        .gif-container img {
+            width: 300px;
+            height: 300px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .question {
+            font-size: 1.8em;
+            color: #333;
+            margin: 30px 0;
+            font-weight: 600;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            min-width: 120px;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            min-width: 120px;
+        }
+
+        .no-btn:hover {
+            transform: scale(0.95);
+        }
+
+        /* Letter styles */
+        .letter {
+            background: #fff9e6;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            margin: 20px 0;
+            border: 2px solid #f5576c;
+        }
+
+        .letter h2 {
+            color: #e91e63;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .letter p {
+            color: #333;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .letter-closing {
+            text-align: right;
+            font-style: italic;
+            margin-top: 30px;
+            color: #e91e63;
+        }
+
+        /* Photo compilation styles */
+        .photo-compilation {
+            margin-top: 30px;
+        }
+
+        .photo-compilation h3 {
+            color: #e91e63;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        .celebration {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px;
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .question {
+                font-size: 1.4em;
+            }
+
+            .gif-container img {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-background" id="heartsBackground"></div>
+
+    <div class="container">
+        <!-- Question Screen -->
+        <div class="question-screen" id="questionScreen">
+            <h1>💕 Valentine's Day 💕</h1>
+            
+            <div class="gif-container">
+                <img src="https://media1.tenor.com/m/89QSIUPhqBkAAAAC/anime-girl-happy.gif" 
+                     alt="Cute valentine" 
+                     id="questionGif">
+            </div>
+
+            <p class="question">Will you be my Valentine? 🌹</p>
+
+            <div class="buttons">
+                <button class="btn yes-btn" id="yesBtn">Yes! 💖</button>
+                <button class="btn no-btn" id="noBtn">No</button>
+            </div>
+        </div>
+
+        <!-- Letter Screen (Hidden initially) -->
+        <div class="letter-screen" id="letterScreen">
+            <div class="celebration">🎉 💕 🎊</div>
+            <h1>You said YES! 😍</h1>
+            
+            <div class="letter">
+                <h2>To Bunsong Anna Heartfilia,</h2>
+                <p>
+                    It's been a long time since we've been talking to each other teh... And I couldn't comprehend of how
+                    I am amazed of how much time we've spent together doe... Thru movie and series watching, bot hangout, and game hangout
+                </p>
+                <p>
+                    I know its been a hard day for u teh knowing things about u more deeper so yeah... Kaya I will stay by your side dawg, as
+                    person who will listen, who will acccompany, and laugh besides u even if... basi ma block ko... sana hindi...
+                    Even though wala ako masyado magawa hehe TT_TT... so yeah!
+                    TT_TT tbh na cricringe ako gumagawa neto kasi like GURLLLLLL GRABE NAMAN GAGAWA TALAGA NG GANITO??? 
+                    OH MY DEISSSS!
+                </p>
+                <p>
+                    But I was hoping na this february 14 we will spend time each other or even yk... Sleep call, movie marathon, gaming, and many more? IDK TT_TT pero yeah
+                    NAKAKAHIYA KASI MAG-AYA OKAY? OO KUPAL AKO PERO MAY HIYA DIN AKO OKAY? TT+TT ewan ko doe kuha mo inis ko
+                </p>
+                <div class="letter-closing">
+                    AZURA
+                </div>
+            </div>
+
+            <div class="photo-compilation">
+                <h3>Our Beautiful Moments Together 📸</h3>
+                <div class="photo-grid" id="photoGrid">
+                    <!-- Placeholder images - you can replace these with your own photos -->
+                    <img src="20251103102642.png" alt="Memory 1">
+                    <img src="20251103103937.png" alt="Memory 2">
+                    <img src="20251103104048.png" alt="Memory 3">
+                    <img src="20251112204041.png" alt="Memory 4">
+                    <img src="20260113182304.png" alt="Memory 5">
+                    <img src="20260113182536.png" alt="Memory 6">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts background
+        function createHearts() {
+            const heartsBackground = document.getElementById('heartsBackground');
+            const heartSymbols = ['💕', '💖', '💗', '💝', '💘', '❤️', '🌹'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                heartsBackground.appendChild(heart);
+            }
+        }
+
+        createHearts();
+
+        // Button functionality
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionScreen = document.getElementById('questionScreen');
+        const letterScreen = document.getElementById('letterScreen');
+        const questionGif = document.getElementById('questionGif');
+
+        let noClickCount = 0;
+        let currentYesSize = 1;
+
+        // Array of sad/pleading GIFs that change when "No" is clicked
+        const sadGifs = [
+            'https://media1.tenor.com/m/89QSIUPhqBkAAAAC/anime-girl-happy.gif',
+            'https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif',
+            'https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif',
+            'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif'
+        ];
+
+        // Phrases that change on the No button
+        const noPhrases = [
+            'No',
+            'Sure ka?',
+            'SURE DYUD KA?',
+            'Sige na...',
+            'Pretty please?',
+            'Mag on bended knee ako',
+            'WALA NA SAD BOI NA AKO',
+            'Sure na dyud ka Julian?'
+        ];
+
+        noBtn.addEventListener('click', function() {
+            noClickCount++;
+            
+            // Increase Yes button size
+            currentYesSize += 0.3;
+            yesBtn.style.transform = `scale(${currentYesSize})`;
+            yesBtn.style.fontSize = (1.2 * currentYesSize) + 'em';
+            
+            // Change No button text
+            if (noClickCount < noPhrases.length) {
+                noBtn.textContent = noPhrases[noClickCount];
+            }
+            
+            // Change GIF to sad one
+            if (noClickCount <= sadGifs.length) {
+                questionGif.src = sadGifs[Math.min(noClickCount - 1, sadGifs.length - 1)];
+            }
+            
+            // Make No button smaller
+            noBtn.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                noBtn.style.transform = 'scale(1)';
+            }, 100);
+        });
+
+        yesBtn.addEventListener('click', function() {
+            // Hide question screen and show letter screen
+            questionScreen.style.display = 'none';
+            letterScreen.style.display = 'block';
+            
+            // Add confetti effect (simple version)
+            createConfetti();
+        });
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ff69b4', '#ffd93d', '#6bcf7f', '#4ecdc4'];
+            const confettiCount = 50;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.opacity = '1';
+                confetti.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                confetti.style.transition = 'all 3s ease-out';
+                confetti.style.zIndex = '1000';
+                confetti.style.borderRadius = '50%';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.style.top = '100vh';
+                    confetti.style.opacity = '0';
+                }, 100);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3100);
+            }
+        }
+    </script>
+</body>
+</html>
